@@ -1,5 +1,6 @@
 const reels = [
   {
+    ismuted : true,
     username: "aman.yadav",
     likes: 12450,
     isLiked: true,
@@ -119,12 +120,15 @@ reels.forEach(function(elem,idx){
     // console.log(elem);
     // console.log(idx);
     sum =sum + `<div class="reel">
-                                <video autoplay loop muted src="${elem.video}"></video>
-                    <div class="bottom">
+                                <video autoplay loop ${elem.ismuted ? 'muted' : ''} src="${elem.video}"></video>
+                                <div class="mute" id=${idx}>
+                                ${elem.ismuted?'<i class="ri-volume-mute-fill"></i>':'<i class="ri-volume-up-fill"></i>'}
+                                </div>
+                                <div class="bottom">
                         <div class="user">
                             <img src="${elem.userProfile}"alt="">
                             <h4>${elem.username}</h4>
-                            <button>${elem.isFollowed?"UnFollow":"Follow"}</button>
+                            <button id="${idx}" class ='follow'>${elem.isFollowed?"UnFollow":"Follow"}</button>
                         </div>
                         <h3>${elem.caption}
                         </h3>
@@ -156,17 +160,69 @@ addData()
 
 //event modeling:
 
-allReels.addEventListener('click', function(dets){
+allReels.addEventListener('click', function(dets){  
   // console.log("Hello"); // aap kahi v click karoge hello milega on screen.
   // console.log(dets);
   // console.log(dets.target);// it gives value of targeting elemnt : eg:- like , share , video , comments , caption , etc
   // console.log(dets.target.id); // arrays ki indexes jesi hai ye id's : 
   // console.log(reels[dets.target.id]); // id pe click krne pe pura ka pura object milega 
   // console.log(reels[dets.target.id].caption); // like pe click krne pe pura ka pura object milega for caption
-  // console.log(reels[dets.target.id].likeCount); // likes ka count milega if id attached hot , jo mere code me abhi nahi h.
-  console.log(reels[dets.target.id]); // This is a golden number , you can find every data w help of this.
+  // console.log(reels[dets.target.id].likes); // likes ka count milega if id attached hot , jo mere code me abhi nahi h.
+  // console.log(reels[dets.target.id]); // This is a golden number , you can find every data w help of this.
+  // if(!reels[dets.target.id].isLiked){
+  //   reels[dets.target.id].likes++;
+  //   reels[dets.target.id].isLiked = true;
+  // }
+  // else{
+  // reels[dets.target.id].likes--;
+  // reels[dets.target.id].isLiked = false;
+  // }
+
+    // reels[dets.target.id].likes++;
+    // reels[dets.target.id].is Liked = true;
   
-  
+    // console.log(dets.target.className);
+
+    if(dets.target.className == 'like'){
+      if(!reels[dets.target.id].isLiked){
+        reels[dets.target.id].likes++ ;
+        reels[dets.target.id].isLiked = true ;
+      }else{
+        reels[dets.target.id].likes-- ;
+      reels[dets.target.id].isLiked = false ;
+      }
+       addData();
+    }
+
+
+
+    if(dets.target.className == 'follow'){
+      if(!reels[dets.target.id].isFollowed){
+        reels[dets.target.id].isFollowed = true;
+      }
+      else{
+        reels[dets.target.id].isFollowed = false;
+      }
+       addData();
+    }
+
+
+    if(dets.target.className == 'mute'){
+      if(!reels[dets.target.id].ismuted){
+        reels[dets.target.id].ismuted = true;
+      }
+      else{
+        reels[dets.target.id].ismuted= false;
+      }
+       addData();
+    }
+
+
+    
+
+  // console.log(reels);
+   
+
   
 })
 
